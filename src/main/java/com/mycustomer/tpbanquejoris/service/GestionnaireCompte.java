@@ -7,7 +7,6 @@ package com.mycustomer.tpbanquejoris.service;
 import com.mycustomer.tpbanquejoris.entity.CompteBancaire;
 import jakarta.annotation.sql.DataSourceDefinition;
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.persistence.Entity;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
