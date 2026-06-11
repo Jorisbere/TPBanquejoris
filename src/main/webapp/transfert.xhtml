@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="jakarta.faces.facelets"
+      xmlns:h="jakarta.faces.html"
+      xmlns:p="primefaces"
+      xmlns:f="jakarta.faces.core">
+
+    <body>
+
+        <ui:composition template="./WEB-INF/templates/template_defaut.xhtml">
+
+            <ui:define name="top">
+                <h1>Transfert d'argent</h1>
+            </ui:define>
+
+            <ui:define name="content">
+                <h:form>
+                    <p:panelGrid columns="2" style="width: 60%;">
+                        <p:outputLabel value="ID compte source :" for="sourceId"/>
+                        <p:inputText id="sourceId" value="#{transfertBean.sourceId}" required="true" requiredMessage="L'ID source est obligatoire" label="ID source">
+                            <f:convertNumber integerOnly="true"/>
+                        </p:inputText>
+
+                        <p:outputLabel value="ID compte destination :" for="destinationId"/>
+                        <p:inputText id="destinationId" value="#{transfertBean.destinationId}" required="true" requiredMessage="L'ID destination est obligatoire" label="ID destination">
+                            <f:convertNumber integerOnly="true"/>
+                        </p:inputText>
+
+                        <p:outputLabel value="Montant à transférer (FCFA) :" for="montant"/>
+                        <p:inputText id="montant" value="#{transfertBean.montant}" required="true" requiredMessage="Le montant est obligatoire" label="Montant">
+                            <f:convertNumber pattern="#0.00"/>
+
+                            <f:validateDoubleRange minimum="0.01"/>
+                        </p:inputText>
+                        <p:commandButton value="Effectuer le transfert" action="#{transfertBean.transferer}" ajax="false" style="margin-top: 10px;"/>
+
+                    </p:panelGrid>
+                </h:form>
+                <h:messages globalOnly="true" style="color: red; margin-top: 20px;"/>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

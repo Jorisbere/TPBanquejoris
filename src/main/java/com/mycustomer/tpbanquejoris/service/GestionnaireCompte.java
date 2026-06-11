@@ -46,11 +46,40 @@ public class GestionnaireCompte {
         Query query = em.createQuery("SELECT c FROM CompteBancaire c");
         return query.getResultList();
     }
-    
+
+    public CompteBancaire findCompteBancaireById(Long id) {
+        return em.find(CompteBancaire.class, id);
+    }
+
+    @Transactional
+    public void tranferer(Long sourceId, Long destinationId, double montant)
+            throws IllegalArgumentException {
+        if (montant <= 0) {
+            throw new IllegalArgumentException("Le montant doit être positif");
+        }
+        CompteBancaire source = findCompteBancaireById(sourceId);
+        CompteBancaire destination = findCompteBancaireById(destinationId);
+
+        if (source == null) {
+            throw new IllegalArgumentException("Compte source introuvable(ID: " + sourceId + ")");
+        }
+        if (destination == null) {
+            throw new IllegalArgumentException("Compte destination introuvable(ID: " + destinationId + ")");
+        }
+        if (source.getSolde() < montant) {
+            throw new IllegalArgumentException("Solde insuffisant sur le compte source");
+        }
+
+        source.setSolde((int) (source.getSolde() - montant));
+        destination.setSolde((int) (destination.getSolde() + montant));
+
+        em.merge(source);
+        em.merge(destination);
+    }
+
     public long compterComptes() {
         return em.createQuery("SELECT COUNT(c) From CompteBancaire c", Long.class)
                 .getSingleResult();
     }
-    
 
 }
